@@ -12,6 +12,7 @@ export class AuthController {
     static createAccount = async (req: Request, res: Response) => {
         try {
             const { email, password } = req.body
+            
             // Prevenir Duplicados
             const userExists = await User.findOne({email})
             if (userExists) {
@@ -21,8 +22,10 @@ export class AuthController {
             }
             // Crear un usuario nuevo
             const user = new User(req.body)
+
             // Hash del Password
             user.password = await hashPassword(password)
+
             // Generar el token
             const token = new Token()
             token.token = generateToken()
